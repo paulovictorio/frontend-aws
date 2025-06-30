@@ -191,7 +191,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build  # Garante que o job 'build' será executado antes
 
-    
+
     steps:
       - name: Definir o nome do repositório (caso não exista)
         if: steps.version.outputs.repo_name == '' || steps.version.outputs.repo_name == null
@@ -245,6 +245,16 @@ jobs:
             sudo yum update -y || sudo apt update -y
             sudo systemctl start docker || sudo service docker start
 
+            # Stop any process using port 80
+            echo "🔎 Verificando processos na porta 80..."
+            PID=$(sudo lsof -t -i:80)
+            if [ -n "$PID" ]; then
+              echo "🛑 Encerrando processo(s) na porta 80 (PID: $PID)..."
+              sudo kill -9 $PID
+            else
+              echo "ℹ️ Nenhum processo encontrado na porta 80."
+            fi
+                    
             # Verificar container existente
             CONTAINER_ID=$(docker ps -q --filter "name=$REPO_NAME")
             if [ -n "$CONTAINER_ID" ]; then
@@ -255,7 +265,7 @@ jobs:
             else
               echo "ℹ️ Nenhum container atual encontrado com nome: $REPO_NAME"
             fi
-
+                    
             echo "🧹 Removendo imagem local antiga, se existir..."
             docker rmi -f "$IMAGE" || echo "ℹ️ Nenhuma imagem antiga encontrada com a tag: $IMAGE"
 
