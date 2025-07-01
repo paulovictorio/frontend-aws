@@ -14,8 +14,8 @@ function App() {
     // Fetch users and products from backend
     async function fetchData() {
       try {
-        const userResponse = await axios.get('http://3.84.14.178:3000/usuarios');
-        const productResponse = await axios.get('http://3.84.14.178:3000/produtos');
+        const userResponse = await axios.get('http://18.204.17.159:3000/usuarios');
+        const productResponse = await axios.get('http://18.204.17.159:3000/produtos');
         setUsers(userResponse.data);
         setProducts(productResponse.data);
       } catch (error) {
