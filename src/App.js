@@ -11,11 +11,11 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch users and products from backend
+    // Fetch users and products from backend via DuckDNS proxy
     async function fetchData() {
       try {
-        const userResponse = await axios.get('http://18.204.17.159:3000/usuarios');
-        const productResponse = await axios.get('http://18.204.17.159:3000/produtos');
+        const userResponse = await axios.get('http://dsm-paulo-api.duckdns.org/usuarios');
+        const productResponse = await axios.get('http://dsm-paulo-api.duckdns.org/produtos');
         setUsers(userResponse.data);
         setProducts(productResponse.data);
       } catch (error) {
